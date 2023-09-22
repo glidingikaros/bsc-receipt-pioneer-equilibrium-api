@@ -1,1 +1,1 @@
-https://glidingikaros.github.io/swagger-github-pages
+https://glidingikaros.github.io/bsc-receipt-pioneer-equilibrium-api
