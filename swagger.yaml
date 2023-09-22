@@ -368,17 +368,12 @@ paths:
         404:
           description: "User not found."
 
-  # Rewards and Coupons
   /rewards/create:
     post:
       summary: "Create a New Reward"
       description: "Creates a new reward with specified parameters."
       requestBody:
         required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Reward"
       responses:
         201:
           description: "Successfully created new reward."
@@ -431,3 +426,88 @@ paths:
           description: "Successfully deleted reward."
         404:
           description: "Reward not found."
+
+  # Engagement Points
+  /engagement_points/earn:
+    post:
+      summary: "Earn Engagement Points"
+      description: "This endpoint enables users to earn engagement points based on specific actions such as purchases or brand engagement."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                userId:
+                  type: "integer"
+                  description: "ID of the user earning points."
+                action:
+                  type: "string"
+                  enum: ["Purchase", "Brand Engagement"]
+                  description: "Type of action that awards points."
+                points:
+                  type: "integer"
+                  description: "Number of points earned."
+      responses:
+        "201":
+          description: "Engagement Points Earned Successfully."
+
+  # Loyalty Tier Management
+  /loyalty_tiers/set:
+    post:
+      summary: "Set Loyalty Tier"
+      description: "This endpoint allows the retailer to establish or update loyalty tiers based on customer engagement points."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                tierName:
+                  type: "string"
+                  enum: ["Silver", "Gold", "Platinum"]
+                  description: "Name of the loyalty tier."
+                pointsRequired:
+                  type: "integer"
+                  description: "Minimum number of engagement points required for this tier."
+      responses:
+        "201":
+          description: "Loyalty Tier Set Successfully."
+
+  /loyalty_tiers/get:
+    get:
+      summary: "Get User's Loyalty Tier"
+      description: "This endpoint retrieves the current loyalty tier of a user based on their engagement points."
+      parameters:
+        - name: "userId"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        "200":
+          description: "User's Loyalty Tier Retrieved Successfully."
+
+  # Exclusive Access Control
+  /exclusive_access/grant:
+    post:
+      summary: "Grant Exclusive Access"
+      description: "This endpoint allows the retailer to grant exclusive access to certain features or products based on the user's loyalty tier."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                userId:
+                  type: "integer"
+                  description: "ID of the user being granted exclusive access."
+                feature:
+                  type: "string"
+                  description: "Feature or product for which exclusive access is being granted."
+      responses:
+        "201":
+          description: "Exclusive Access Granted Successfully."
